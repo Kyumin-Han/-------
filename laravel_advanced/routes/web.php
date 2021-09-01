@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// 처음 접속 시 로그인 되어있지 않아 dashboard가 호출되지 않는 문제 생김
+// middleware를 통해서 로그인부터 완료 후 dashboard로 진입
 Route::middleware(['auth:sanctum', 'verified'])->get('/', function () {
     return view('welcome');
 })->name('comments');
