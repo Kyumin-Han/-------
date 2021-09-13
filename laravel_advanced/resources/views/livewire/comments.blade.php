@@ -44,6 +44,7 @@
                     {{ $comment->created_at->diffForHumans() }}
                 </p>
                 <i wire:click="$emit('deleteClicked', {{ $comment->id }})" class="fas fa-times text-red-400 cursor-pointer hover:text-red-600"></i>
+                <i wire:click="$emit('openModal', 'edit-comment', {{ json_encode(['commentId'=>$comment->id]) }})" class="mx-5 fas fa-edit text-blue-400 cursor-pointer hover:text-blue-600"></i>
             </div>
             <p class="text-gray-800">
                 {{ $comment->content }}

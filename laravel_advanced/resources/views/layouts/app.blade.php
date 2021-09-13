@@ -16,6 +16,7 @@
 
         @livewireStyles
         @livewireScripts
+        @livewire('livewire-ui-modal')
         <!-- Scripts -->
         <script src="{{ mix('js/app.js') }}" defer></script>
     </head>
