@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -18,10 +19,21 @@ class Comments extends Component
 
     public $newComment;
     public $image;
+    public $userId;
 
     protected $listeners = [
-        'delete' => 'remove'
+        'delete' => 'remove',
+        'commentUpdated' => 'getComments',
+        'userSelected'
     ];
+
+    public function userSelected($userId) {
+        $this->userId = $userId;
+    }
+
+    public function getComments() {
+        
+    }
 
     public function remove($commentId) {
         $comment = Comment::find($commentId);
@@ -81,14 +93,15 @@ class Comments extends Component
     }
 
     public function mount() {
-        $this->newComment="Hello world";
+        // $this->newComment="Hello world";
+        $this->userId = Auth::user()->id;
     }
 
     
     public function render()
     {
         return view('livewire.comments', [
-            'comments' => Comment::latest()->paginate(5),
+            'comments' => Comment::where("user_id", $this->userId)->latest()->paginate(5),
         ]);
     }
 }

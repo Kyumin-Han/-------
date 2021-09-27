@@ -7,6 +7,8 @@
         @endif
     </div>
 
+    @if($userId == auth()->user()->id)
+    {{-- @can('viewAny', $userId) --}}
     <section>
         @if ($image)
             <img src="{{ $image->temporaryUrl() }}" width="200">
@@ -33,6 +35,9 @@
             <button class="w-20 p-2 text-white bg-blue-500 rounded shadow">Add</button>
         </div>        
     </form>
+    {{-- @endcan --}}
+    @endif
+    
     @foreach($comments as $comment)
     <div class="p-2 my-2 border rounded shadow">
         <div class="flex justify-between my-2">
@@ -57,6 +62,9 @@
 @endforeach
 
 {{ $comments->links() }}
+<div wire:poll.1000ms.visible>
+    Current time : {{ now() }}
+</div>
 </div>
 
 <script>

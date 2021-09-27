@@ -8,7 +8,14 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                @livewire('comments')
+                <div class="flex my-10 w-12/12">
+                    <div class="w-4/12 px-2 border rounded">
+                        @livewire('user-list')
+                    </div>
+                    <div class="w-8/12 px-2 border rounded">
+                        @livewire('comments')
+                    </div>
+                </div>
             </div>
         </div>
     </div>
