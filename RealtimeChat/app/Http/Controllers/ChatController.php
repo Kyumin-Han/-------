@@ -30,7 +30,7 @@ class ChatController extends Controller
         $msgs = ChatMessage::where('chat_room_id', $roomId)->with('user')->latest()->get();
         // with를 통해 관계가 정의된 테이블의 정보도 같이 준다
         // dd($msgs);
-        $msgs[0]->user->name;
+        // $msgs[0]->user->name;
         return $msgs;
     }
 
@@ -38,11 +38,13 @@ class ChatController extends Controller
         $request->validate(['message' => 'required']);
 
         $msg = ChatMessage::create([
-            'user_id' => auth()->user()->name,
+            'user_id' => auth()->user()->id,
             'chat_room_id' => $roomId,
             'message' => $request->message,
         ]);
-
+        // broadcasting을 위해 새로운 메세지가 생성되고 DB에 저장 될 때마다 이벤트를 생성해주고 이 이벤트를 broadcasting 한다
+        // broadcast()의 인자로 이벤트 객체 이름을 준다
+        broadcast()->toOthers();
         return $msg;
     }
 
