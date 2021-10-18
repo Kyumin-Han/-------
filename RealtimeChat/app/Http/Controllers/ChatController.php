@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewChatMessage;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class ChatController extends Controller
         ]);
         // broadcasting을 위해 새로운 메세지가 생성되고 DB에 저장 될 때마다 이벤트를 생성해주고 이 이벤트를 broadcasting 한다
         // broadcast()의 인자로 이벤트 객체 이름을 준다
-        broadcast()->toOthers();
+        broadcast(new NewChatMessage($msg->chat_room_id))->toOthers();
         return $msg;
     }
 

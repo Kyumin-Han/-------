@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-2">
-        <div class="font-bold text-xl">
+        <div v-if="currentRoom" class="font-bold text-xl">
             {{ currentRoom.name }} Chatting Room
         </div>
         <select class="float-right" v-model="currentRoom" @change="$emit('roomChanged', currentRoom)">

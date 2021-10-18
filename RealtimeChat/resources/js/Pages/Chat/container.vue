@@ -3,7 +3,8 @@
         <template #header>
             <chat-room-selection :rooms="chatRooms" :currentRoom="currentRoom" v-on:roomChanged="setRoom($event)"/>
         </template>
-        <message-container :messages="messages"/>
+        <!-- <message-container :messages="messages"/> -->
+        <styled-message-container :messages="messages"/>
         <input-message :room="currentRoom" v-on:messagesent="getMessages"/>
     </app-layout>
 </template>
@@ -13,6 +14,7 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import MessageContainer from './messageContainer.vue';
 import InputMessage from './inputMessage.vue';
 import ChatRoomSelection from './chatRoomSelection.vue'
+import StyledMessageContainer from './styledMessageContainer.vue'
 
 export default {
     components : {
@@ -20,6 +22,7 @@ export default {
         MessageContainer,
         InputMessage,
         ChatRoomSelection,
+        StyledMessageContainer,
     },
 
     data() {
@@ -29,8 +32,34 @@ export default {
             messages : [],
         }
     },
+    watch: {
+        currentRoom(val, oldVal) {
+            // alert('watch:currentRoom');
+            if(oldVal.id) {
+                this.disconnect(oldVal);
+            }
+            this.connect()
+        }
+    },
 
     methods : {
+        connect() {
+            // alert('connect')
+            // 방이 변경 되었을 때, 이 메소드가 호출
+            // 이 방의 메세지를 불러와 출력한다.
+            // 변경 된 방 정보는 currentRoom이다
+            this.getMessages();
+            const vm = this;
+            window.Echo.private('chat.' + this.currentRoom.id).listen('.message.new', e=>{
+                vm.getMessages();
+            })
+            // 채널에 구독신청을 하기 위해서 설정한 이벤트 채널 이름의 앞에 .을 붙여준다.
+            // 이벤트 listen할 때의 람다 안에서 뷰 인스턴스의 메소드를 불러 주어야 한다.
+            // 따라서 그 뷰 인스턴스를 나타내는 변수를 만들고 메소드 안에서는 그 변수를 this 대신 사용한다.
+        },
+        disconnect(room) {
+            window.Echo.leave('chat.' + room.id)
+        },
         getRooms() {
             axios.get('/chat/rooms')
             .then(response=>{
