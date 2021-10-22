@@ -25,7 +25,7 @@
                             </div>
 
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('chat')" :active="route().current('chat')">
+                                <jet-nav-link :href="route('chatV2')" :active="route().current('chatV2')">
                                     Chat
                                 </jet-nav-link>
                             </div>
@@ -154,7 +154,7 @@
                     </div>
 
                     <div class="pt-2 pb-3 space-y-1">
-                        <jet-responsive-nav-link :href="route('chat')" :active="route().current('chat')">
+                        <jet-responsive-nav-link :href="route('chatV2')" :active="route().current('chatV2')">
                             Chat
                         </jet-responsive-nav-link>
                     </div>

@@ -28,7 +28,7 @@ class ChatController extends Controller
         // lazy loading -> 조인을 해서 값을 가져올 경우에 조인을 하기 전 데이터만 먼저 보내주는 방식, 정보에 접근 할 때 값을 가져온다.
         // blade를 이용할때는 상관 없지만 vue의 axios에는 값만 넘겨주기 때문에 user에 접근 할 수 없기 때문에 with절을 이용해서 처음부터 연계된 테이블의 정보까지 같이 넘겨주는 방식을 eager loading 이라고 한다
 
-        $msgs = ChatMessage::where('chat_room_id', $roomId)->with('user')->latest()->get();
+        $msgs = ChatMessage::where('chat_room_id', $roomId)->with('user')->latest()->paginate(3);
         // with를 통해 관계가 정의된 테이블의 정보도 같이 준다
         // dd($msgs);
         // $msgs[0]->user->name;
@@ -43,9 +43,11 @@ class ChatController extends Controller
             'chat_room_id' => $roomId,
             'message' => $request->message,
         ]);
+
+        $msg->load('user');
         // broadcasting을 위해 새로운 메세지가 생성되고 DB에 저장 될 때마다 이벤트를 생성해주고 이 이벤트를 broadcasting 한다
         // broadcast()의 인자로 이벤트 객체 이름을 준다
-        broadcast(new NewChatMessage($msg->chat_room_id))->toOthers();
+        broadcast(new NewChatMessage($msg))->toOthers();
         return $msg;
     }
 
@@ -54,5 +56,9 @@ class ChatController extends Controller
         // vue파일의 이름을 인자로 넘겨주어 페이지를 호출한다
         return Inertia::render('Chat/container');
         // vue.js파일은 resources의 js->pages에서 찾는다
+    }
+
+    public function indexV2() {
+        return Inertia::render('Chat/containerV2');
     }
 }
