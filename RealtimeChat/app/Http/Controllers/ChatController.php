@@ -35,6 +35,12 @@ class ChatController extends Controller
         return $msgs;
     }
 
+    public function deleteMessage($msgId) {
+        $comment = ChatMessage::find($msgId);
+
+        $comment->delete();
+    }
+
     public function newMessage(Request $request, $roomId) {
         $request->validate(['message' => 'required']);
 

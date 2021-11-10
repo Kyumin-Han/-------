@@ -12,6 +12,7 @@
 import StyledMessageItem from './styledMessageItem.vue';
 export default {
     props:['messages'],
-    components : {StyledMessageItem}
+    components : {StyledMessageItem},
+    
 }
 </script>

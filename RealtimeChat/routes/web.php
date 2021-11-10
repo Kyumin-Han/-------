@@ -38,3 +38,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/chat/rooms', [ChatControl
 Route::middleware(['auth:sanctum', 'verified'])->get('/chat/room/{roomId}/messages', [ChatController::class, 'messages']);
 
 Route::middleware(['auth:sanctum', 'verified'])->post('/chat/{roomId}/message', [ChatController::class, 'newMessage']);
+
+Route::middleware(['auth:sanctum', 'verified'])->post('/chat/{msgId}', [ChatController::class, 'deleteMessage']);
